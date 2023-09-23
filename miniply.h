@@ -235,6 +235,13 @@ namespace miniply {
     bool find_color(uint32_t propIdxs[3]) const;
     bool find_indices(uint32_t propIdxs[1]) const;
 
+    // Unsafe API: get a raw pointer to the data loaded after a call to load_element().
+    // => it can be used to skip memcpying data into a temporary storage (via extract_properties())
+    // and directly read and process data.
+    // Only use it for data when all rows are contiguous in memory
+    template <typename T>
+    const T* get_element_data() const { return reinterpret_cast<const T*>(m_elementData.data()); }
+
   private:
     bool refill_buffer();
     bool rewind_to_safe_char();
